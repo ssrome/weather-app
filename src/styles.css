@@ -31,17 +31,29 @@ button.btn.btn-primary.change-unit {
   border: 1px solid #000000;
   border-radius: 10px;
   box-shadow: inset 0px 0px 10px 2px;
-  display: block;
   font-family: "Yusei Magic", sans-serif;
   font-size: 1.4em;
   margin: 0 auto 40px;
+  max-width: 500px;
   padding: 30px;
   text-align: center;
-  width: 250px;
 }
 .city {
   font-size: 1.4em;
   font-weight: 700;
+}
+#description {
+  font-size: 0.7em;
+}
+.todays-weather-icons {
+  font-size: 1.4em;
+}
+.info {
+  text-align: right;
+}
+.additional-info {
+  font-size: 0.7em;
+  text-align: left;
 }
 .todays-temp {
   font-size: 1.8em;

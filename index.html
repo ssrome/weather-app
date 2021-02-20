@@ -51,12 +51,12 @@
                 />
 
                 <button class="btn btn-primary" type="submit">
-                  Change city
+                  Search for city
                 </button>
                 <button
                   id="current-location"
                   class="btn btn-secondary current-location"
-                  type="click"
+                  type="button"
                 >
                   Current Location
                 </button>
@@ -64,29 +64,31 @@
             </div>
           </div>
 
-          <div class="row">
+          <div class="row todays-forecast">
             <div class="col">
-              <ul class="todays-forecast">
-                <li>
-                  <p>
-                    <span class="city" id="city">London</span>
-                    <br />
-                    <span id="time"></span>
-                  </p>
-                </li>
-                <!-- <li class="weather-icons">☀️</li> -->
-                <li class="todays-temp">4°</li>
+              <ul class="">
+                <li class="todays-temp"></li>
+                <li class="todays-weather-icons">☀️</li>
+                <li id="description"></li>
+              </ul>
+            </div>
+            <div class="col info">
+              <ul class="additional-info">
+                <li class="city" id="city"></li>
+                <li id="time"></li>
+                <li id="wind-speed"></li>
+                <li id="precipitation">Precipitation:</li>
               </ul>
             </div>
           </div>
 
-          <!-- <div class="row">
+          <div class="row">
             <div class="col">
-              <button type="submit" class="btn btn-primary mb-3 change-unit">
+              <button type="button" class="btn btn-primary mb-3 change-unit">
                 Change to Fahrenheit
               </button>
             </div>
-          </div> -->
+          </div>
 
           <!-- <div class="row">
             <div class="col">

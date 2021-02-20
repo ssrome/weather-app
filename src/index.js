@@ -31,30 +31,31 @@ let currentDateTime = `${day} ${changeToDoubleDigits(
 let time = document.querySelector("#time");
 time.innerHTML = currentDateTime;
 
-//Display sumbitted city
-// function displayCity(event) {
-//   event.preventDefault();
-//   let cityInput = document.querySelector("#city-input");
-//   let city = document.querySelector("#city");
-//   if (cityInput.value) {
-//     city.innerHTML = cityInput.value;
-//   }
-// }
-
 //get weather for submitted city
 function displayCityTemperature(response) {
   let city = document.querySelector("#city");
   let todaysTemp = document.querySelector(".todays-temp");
+  let description = document.querySelector("#description");
+  let windSpeed = document.querySelector("#wind-speed");
   city.innerHTML = response.data.name;
+  description.innerHTML = response.data.weather[0].description;
   todaysTemp.innerHTML = `${Math.round(response.data.main.temp)}°C`;
+  windSpeed.innerHTML = `Wind speed: ${response.data.wind.speed}m/sec`;
 }
 
 function getCityTemperature(event) {
   event.preventDefault();
   let cityInput = document.querySelector("#city-input");
-  let apiUrl = `${baseUrl}?q=${cityInput.value}&units=${units}&appid=${apiKey}`;
-  if (cityInput.value) {
-    axios.get(apiUrl).then(displayCityTemperature);
+  apiUrl = `${baseUrl}?q=${cityInput.value}&units=${units}&appid=${apiKey}`;
+  if (cityInput.value.trim()) {
+    axios
+      .get(apiUrl)
+      .then(displayCityTemperature)
+      .catch(function (error) {
+        alert("The city entered hasn't been found. Try another city.");
+      });
+  } else {
+    alert("Please enter a city.");
   }
 }
 
@@ -78,6 +79,14 @@ searchCityForm.addEventListener("submit", getCityTemperature);
 
 let currentLocation = document.querySelector("#current-location");
 currentLocation.addEventListener("click", getLocation);
+
+//show weather for initial city
+function getDefaultCity() {
+  let apiUrl = `${baseUrl}?q=london&units=${units}&appid=${apiKey}`;
+  axios.get(apiUrl).then(displayCityTemperature);
+}
+
+getDefaultCity();
 
 //Convert temperature
 // function changeUnit(event) {
