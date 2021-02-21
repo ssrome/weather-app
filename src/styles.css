@@ -16,18 +16,21 @@ ul {
   margin: 0;
   padding: 0;
 }
+#description:first-letter {
+  text-transform: capitalize;
+}
 .col.search {
   margin: 0 0 40px;
 }
 button.btn.btn-secondary.current-location {
   margin: 0 0 0 20px;
 }
-button.btn.btn-primary.change-unit {
+button.btn.btn-primary.fahrenheit {
   display: block;
   margin: 0 auto 80px;
 }
 .todays-forecast {
-  background-color: #f5f5f5;
+  /* background-color: #f5f5f5; */
   border: 1px solid #000000;
   border-radius: 10px;
   box-shadow: inset 0px 0px 10px 2px;
