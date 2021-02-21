@@ -25,7 +25,8 @@ ul {
 button.btn.btn-secondary.current-location {
   margin: 0 0 0 20px;
 }
-button.btn.btn-primary.fahrenheit {
+button.btn.btn-primary.fahrenheit,
+button.btn.btn-primary.celsius {
   display: block;
   margin: 0 auto 80px;
 }
