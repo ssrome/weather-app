@@ -68,25 +68,20 @@ function getForecast(response) {
 }
 
 function displayForecast(response) {
-  let forecast = document.querySelector("#forecast");
-  //console.log(response.data.daily);
+  console.log(response.data.daily);
   let dailyForecast = response.data.daily;
-  // dailyForecast.forEach((element) => console.log(element.clouds));
-
-  dailyForecast.forEach(function (element) {
-    `${element.clouds}`;
-    //   `<div class="col">
-    //     <ul class="forecast-elements">
-    //     <li class="day">Weds</li>
-    //     <li class="weather-icons"><img src="http://openweathermap.org/img/wn/${
-    //       element.weather[0].icon
-    //     }@2x.png" alt="${element.weather[0].description}"/></li>
-    //     <li class="temp">${Math.round(element.temp.max)}°</li>
-    //   </ul>
-    // </div>`
-    //console.log(element);
+  dailyForecast = dailyForecast.slice(0, 5);
+  let forecastElements = document.querySelector("#forecast");
+  forecastElements.innerHTML = dailyForecast.map(function (item) {
+    let forecastDate = new Date(item.dt * 1000);
+    return `<!-- --> <div class="col-2 daily"><ul class="forecast-elements"><li class="day">${convertDay(
+      forecastDate
+    ).substring(0, 3)}</li><li class="daily-weather-icons">
+    <img src="http://openweathermap.org/img/wn/${
+      item.weather[0].icon
+    }.png" alt="${item.weather[0].description}"/>
+    </li><li class="temp">${Math.round(item.temp.max)}°</li></ul></div><!--`;
   });
-  forecast.innerHTML;
 }
 
 function getCityTemperature(event) {

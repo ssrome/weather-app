@@ -9,7 +9,7 @@ div.row.app {
   box-shadow: 0px 0px 10px 5px;
   margin: 60px auto 0;
   padding: 15px;
-  width: 720px;
+  max-width: 700px;
 }
 ul {
   list-style-type: none;
@@ -31,7 +31,7 @@ button.btn.btn-primary.celsius {
   margin: 0 auto 80px;
 }
 .todays-forecast {
-  /* background-color: #f5f5f5; */
+  background-color: #dee2e6;
   border: 1px solid #000000;
   border-radius: 10px;
   box-shadow: inset 0px 0px 10px 2px;
@@ -73,23 +73,35 @@ button.btn.btn-primary.celsius {
   text-decoration: underline;
 }
 .five-day-forecast {
-  background-color: #f5f5f5;
+  background-color: #dee2e6;
   border: 1px solid #000000;
   border-radius: 10px;
   box-shadow: inset 0px 0px 10px 2px;
-  margin: 20px 0 0;
-  padding: 10px 30px 30px;
+  margin: 10px 0 0;
+  padding: 0px 10px 10px;
   text-align: center;
 }
 p.future-heading {
   font-size: 1.6em;
   font-weight: 600;
 }
+div#forecast.row {
+  margin: 0 auto;
+  text-align: center;
+}
+.daily {
+  margin: 0 auto;
+  padding: 0;
+}
 .forecast-elements {
   font-family: "Yusei Magic", sans-serif;
-  font-size: 1.1em;
+  font-size: 0.6em;
+  margin: 0 auto;
+  width: 60px;
+}
+daily-weather-icons {
   margin: 0;
-  width: 80px;
+  width: 10px;
 }
 .weather-icons {
   font-size: 2.4em;
