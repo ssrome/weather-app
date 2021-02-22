@@ -38,9 +38,20 @@ function formatTime(timestamp) {
     minutes
   )}`;
 }
+let cityTemperature = null;
+let celsiusTemperature = null;
+
+function convertCelsiusToFahrenheit(cTemp) {
+  return Math.round((cTemp * 9) / 5 + 32);
+}
+
+function convertFahrenheitToCelsius(fTemp) {
+  return Math.round(((fTemp - 32) * 5) / 9);
+}
 
 //get weather for submitted city
 function displayCityTemperature(response) {
+  cityTemperature = response;
   getForecast(response);
   let city = document.querySelector("#city");
   let description = document.querySelector("#description");
@@ -60,26 +71,44 @@ function displayCityTemperature(response) {
 }
 
 function getForecast(response) {
+  let buttonClickEvent = event.target.id;
   let latitudeResponse = response.data.coord.lat;
   let longitudeResponse = response.data.coord.lon;
   let apiUrl = `${onecallURL}lat=${latitudeResponse}&lon=${longitudeResponse}&exclude=minutely,hourly,alerts&appid=${apiKey}&units=${units}`;
-  axios.get(apiUrl).then(displayForecast);
+  axios.get(apiUrl).then(function (response) {
+    displayForecast(response, buttonClickEvent);
+  });
 }
 
-function displayForecast(response) {
+function displayForecast(response, buttonClickEvent) {
   let dailyForecast = response.data.daily;
   dailyForecast = dailyForecast.slice(0, 5);
   let forecastElements = document.querySelector("#forecast");
-  forecastElements.innerHTML = dailyForecast.map(function (item) {
-    let forecastDate = new Date(item.dt * 1000);
-    return `<!-- --> <div class="col-2 daily"><ul class="forecast-elements"><li class="day">${convertDay(
-      forecastDate
-    ).substring(0, 3)}</li><li class="daily-weather-icons">
+  if (buttonClickEvent && buttonClickEvent === "fahrenheit") {
+    forecastElements.innerHTML = dailyForecast.map(function (item) {
+      let forecastDate = new Date(item.dt * 1000);
+      return `<!-- --> <div class="col-2 daily"><ul class="forecast-elements"><li class="day">${convertDay(
+        forecastDate
+      ).substring(0, 3)}</li><li class="daily-weather-icons">
+    <img src="http://openweathermap.org/img/wn/${
+      item.weather[0].icon
+    }.png" alt="${item.weather[0].description}"/>
+    </li><li class="temp">${Math.round(
+      convertCelsiusToFahrenheit(item.temp.max)
+    )}°</li></ul></div><!--`;
+    });
+  } else {
+    forecastElements.innerHTML = dailyForecast.map(function (item) {
+      let forecastDate = new Date(item.dt * 1000);
+      return `<!-- --> <div class="col-2 daily"><ul class="forecast-elements"><li class="day">${convertDay(
+        forecastDate
+      ).substring(0, 3)}</li><li class="daily-weather-icons">
     <img src="http://openweathermap.org/img/wn/${
       item.weather[0].icon
     }.png" alt="${item.weather[0].description}"/>
     </li><li class="temp">${Math.round(item.temp.max)}°</li></ul></div><!--`;
-  });
+    });
+  }
 }
 
 function getCityTemperature(event) {
@@ -110,13 +139,13 @@ function getLocation() {
   navigator.geolocation.getCurrentPosition(getCurrentLocationTemperature);
 }
 
-let celsiusTemperature = null;
-
 let searchCityForm = document.querySelector("#search-city");
 searchCityForm.addEventListener("submit", getCityTemperature);
+searchCityForm.addEventListener("submit", convertUnit);
 
 let currentLocation = document.querySelector("#current-location");
 currentLocation.addEventListener("click", getLocation);
+currentLocation.addEventListener("click", convertUnit);
 
 //show weather for initial city
 function getDefaultCity() {
@@ -125,40 +154,13 @@ function getDefaultCity() {
   axios.get(apiUrl).then(displayCityTemperature);
 }
 
-function switchConversionButton(event) {
-  if (event.target.id === "fahrenheit") {
-    changeUnitButton.innerHTML = `<button
-                  type="button"
-                  class="btn btn-primary mb-3 celsius"
-                  id="celsius"
-                >
-                  Change to Celsius
-                </button>`;
-  } else if (event.target.id === "celsius") {
-    changeUnitButton.innerHTML = `<button
-                  type="button"
-                  class="btn btn-primary mb-3 fahrenheit"
-                  id="fahrenheit"
-                >
-                  Change to Fahrenheit
-                </button>`;
-  }
-}
-
-function convertCelsiusToFahrenheit(cTemp) {
-  return Math.round((cTemp * 9) / 5 + 32);
-}
-
-function convertFahrenheitToCelsius(fTemp) {
-  return Math.round(((fTemp - 32) * 5) / 9);
-}
-
 //Convert temperature
 function convertUnit(event) {
   event.preventDefault();
   let todaysTemp = document.querySelector(".todays-temp");
   let changeUnitButton = document.querySelector(".change-unit");
   if (event.target.id === "fahrenheit") {
+    getForecast(cityTemperature);
     changeUnitButton.innerHTML = `<button
                   type="button"
                   class="btn btn-primary mb-3 celsius"
@@ -168,7 +170,8 @@ function convertUnit(event) {
                 </button>`;
     let fahrenheitTemperature = convertCelsiusToFahrenheit(celsiusTemperature);
     todaysTemp.innerHTML = `${fahrenheitTemperature}°F`;
-  } else if (event.target.id === "celsius") {
+  } else {
+    getForecast(cityTemperature);
     todaysTemp.innerHTML = `${celsiusTemperature}°C`;
     changeUnitButton.innerHTML = `<button
                   type="button"
