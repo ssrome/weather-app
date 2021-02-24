@@ -8,7 +8,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Yusei+Magic&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&family=Yusei+Magic&display=swap"
       rel="stylesheet"
     />
 
@@ -36,35 +36,46 @@
     <div class="container">
       <div class="row app">
         <div class="col">
-          <div class="row">
-            <div class="col search">
-              <form class="d-flex" id="search-city">
-                <span class="input-group-text" id="basic-addon1"
-                  ><i class="fas fa-search"></i
-                ></span>
-                <input
-                  class="form-control me-2"
-                  type="search"
-                  placeholder="Enter city"
-                  aria-label="Search"
-                  id="city-input"
-                  autocomplete="off"
-                />
+          <div class="row search">
+            <div class="col">
+              <form class="row gy-2 gx-3 align-items-center" id="search-city">
+                <div class="col-auto">
+                  <label class="visually-hidden" for="autoSizingInputGroup"
+                    >Username</label
+                  >
+                  <div class="input-group">
+                    <div class="input-group-text">
+                      <i class="fas fa-search"></i>
+                    </div>
+                    <input
+                      type="search"
+                      class="form-control"
+                      placeholder="Enter city"
+                      aria-label="Search"
+                      id="city-input"
+                      autocomplete="off"
+                    />
+                  </div>
+                </div>
 
-                <button
-                  class="btn btn-primary"
-                  id="search-button"
-                  type="submit"
-                >
-                  Search for city
-                </button>
-                <button
-                  id="current-location"
-                  class="btn btn-secondary current-location"
-                  type="button"
-                >
-                  Current Location
-                </button>
+                <div class="col-auto">
+                  <button
+                    class="btn btn-primary"
+                    id="search-button"
+                    type="submit"
+                  >
+                    Search City
+                  </button>
+                </div>
+                <div class="col-auto">
+                  <button
+                    id="current-location"
+                    class="btn btn-secondary current-location"
+                    type="button"
+                  >
+                    Current Location
+                  </button>
+                </div>
               </form>
             </div>
           </div>
@@ -73,16 +84,18 @@
             <div class="col">
               <ul class="">
                 <li class="todays-temp"></li>
-                <li class="todays-weather-icons" id="todays-icon"></li>
-                <li id="description"></li>
+                <li id="todays-icon"></li>
+                <li class="description" id="description"></li>
               </ul>
             </div>
             <div class="col info">
               <ul class="additional-info">
                 <li class="city" id="city"></li>
-                <li>Updated: <span id="time"></span></li>
+                <li><span id="time"></span></li>
+                <li>Feels like: <span id="feels-like"></span></li>
                 <li>Humidity: <span id="humidity"></span>%</li>
                 <li>Wind speed: <span id="wind-speed"></span></li>
+                <li>Pressure: <span id="pressure"></span> hPa</li>
               </ul>
             </div>
           </div>
@@ -123,7 +136,7 @@
         <div class="col">
           <p>
             <span class="photo-credit">
-              Image by
+              Background image by
               <a
                 href="https://pixabay.com/photos/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=731260"
                 >Free-Photos</a
@@ -132,6 +145,16 @@
               <a
                 href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=731260"
                 >Pixabay</a
+              ></span
+            >
+          </p>
+          <p>
+            <span class="icons-credit"
+              >Weather icons by
+              <a
+                href="https://github.com/basmilius/weather-icons"
+                target="_blank"
+                >Bas Milius</a
               ></span
             >
           </p>

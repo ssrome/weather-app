@@ -3,6 +3,12 @@ let units = "metric";
 let weatherUrl = "https://api.openweathermap.org/data/2.5/weather";
 //let forecastURL = "https://api.openweathermap.org/data/2.5/forecast?";
 let onecallURL = "https://api.openweathermap.org/data/2.5/onecall?";
+let weatherMapIconsURL = "http://openweathermap.org/img/wn/";
+let weatherIcons = "./images/icons/";
+
+function showIcon(iconCode) {
+  return `${weatherIcons}${iconCode}.svg`;
+}
 
 function changeToDoubleDigits(time) {
   if (time < 10) {
@@ -40,6 +46,7 @@ function formatTime(timestamp) {
 }
 let cityTemperature = null;
 let celsiusTemperature = null;
+let celsiusFeelsLikeTemp = null;
 
 function convertCelsiusToFahrenheit(cTemp) {
   return Math.round((cTemp * 9) / 5 + 32);
@@ -55,18 +62,27 @@ function displayCityTemperature(response) {
   getForecast(response);
   let city = document.querySelector("#city");
   let description = document.querySelector("#description");
+  let feelsLike = document.querySelector("#feels-like");
   let humidity = document.querySelector("#humidity");
+  let pressure = document.querySelector("#pressure");
   let time = document.querySelector("#time");
   let todaysTemp = document.querySelector(".todays-temp");
   let todaysWeatherIcons = document.querySelector("#todays-icon");
   let windSpeed = document.querySelector("#wind-speed");
   celsiusTemperature = Math.round(response.data.main.temp);
+  celsiusFeelsLikeTemp = Math.round(response.data.main.feels_like);
   city.innerHTML = response.data.name;
   description.innerHTML = response.data.weather[0].description;
+  feelsLike.innerHTML = `${celsiusFeelsLikeTemp}°C`;
   humidity.innerHTML = `${response.data.main.humidity}`;
+  pressure.innerHTML = `${response.data.main.pressure}`;
   time.innerHTML = formatTime(response.data.dt + response.data.timezone);
   todaysTemp.innerHTML = `${celsiusTemperature}°C`;
-  todaysWeatherIcons.innerHTML = `<img src="http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png" alt="${response.data.weather[0].description}"/>`;
+  todaysWeatherIcons.innerHTML = `<img src="${showIcon(
+    response.data.weather[0].icon
+  )}" alt="${
+    response.data.weather[0].description
+  }" class="todays-weather-icon"/>`;
   windSpeed.innerHTML = `${Math.round(response.data.wind.speed * 2.237)} mph`;
 }
 
@@ -90,12 +106,12 @@ function displayForecast(response, buttonClickEvent) {
       return `<!-- --> <div class="col-2 daily"><ul class="forecast-elements"><li class="day">${convertDay(
         forecastDate
       ).substring(0, 3)}</li><li class="daily-weather-icons">
-    <img src="http://openweathermap.org/img/wn/${
+    <img src="${showIcon(
       item.weather[0].icon
-    }.png" alt="${item.weather[0].description}"/>
-    </li><li class="temp">${Math.round(
+    )}" alt="${item.weather[0].description}"/>
+    </li><li class="temp"><span class="max-temp">${Math.round(
       convertCelsiusToFahrenheit(item.temp.max)
-    )}°</li></ul></div><!--`;
+    )}°</span> / <span class="min-temp">${Math.round(convertCelsiusToFahrenheit(item.temp.min))}°</span></li></ul></div><!--`;
     });
   } else {
     forecastElements.innerHTML = dailyForecast.map(function (item) {
@@ -103,10 +119,12 @@ function displayForecast(response, buttonClickEvent) {
       return `<!-- --> <div class="col-2 daily"><ul class="forecast-elements"><li class="day">${convertDay(
         forecastDate
       ).substring(0, 3)}</li><li class="daily-weather-icons">
-    <img src="http://openweathermap.org/img/wn/${
+    <img src="${showIcon(
       item.weather[0].icon
-    }.png" alt="${item.weather[0].description}"/>
-    </li><li class="temp">${Math.round(item.temp.max)}°</li></ul></div><!--`;
+    )}" alt="${item.weather[0].description}"/>
+    </li><li class="temp"><span class="max-temp">${Math.round(
+      item.temp.max
+    )}°</span> / <span class="min-temp">${Math.round(item.temp.min)}°</span></li></ul></div><!--`;
     });
   }
 }
@@ -158,6 +176,7 @@ function getDefaultCity() {
 function convertUnit(event) {
   event.preventDefault();
   let todaysTemp = document.querySelector(".todays-temp");
+  let feelsLike = document.querySelector("#feels-like");
   let changeUnitButton = document.querySelector(".change-unit");
   if (event.target.id === "fahrenheit") {
     getForecast(cityTemperature);
@@ -170,9 +189,14 @@ function convertUnit(event) {
                 </button>`;
     let fahrenheitTemperature = convertCelsiusToFahrenheit(celsiusTemperature);
     todaysTemp.innerHTML = `${fahrenheitTemperature}°F`;
+    let fahrenheitFeelsLikeTemp = convertCelsiusToFahrenheit(
+      celsiusFeelsLikeTemp
+    );
+    feelsLike.innerHTML = `${fahrenheitFeelsLikeTemp}°F`;
   } else {
     getForecast(cityTemperature);
     todaysTemp.innerHTML = `${celsiusTemperature}°C`;
+    feelsLike.innerHTML = `${celsiusFeelsLikeTemp}°C`;
     changeUnitButton.innerHTML = `<button
                   type="button"
                   class="btn btn-primary mb-3 fahrenheit"
